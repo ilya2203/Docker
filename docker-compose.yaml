@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+    nginx1:
+        image: localhost:5000/nginx1_v1
+        mem_limit: 128m
+        cpus: 0.5
+        ports:
+            - "80:80"
+        volumes: 
+            - ./app:/usr/share/nginx/html
+        networks: 
+            nw1:
+                ipv4_address: 172.100.1.10
+    nginx2:
+        image: localhost:5000/nginx2_v1
+        mem_limit: 128m
+        cpus: 0.5
+        ports:
+            - "8080:80"
+        volumes: 
+            - ./app:/usr/share/nginx/html
+        networks: 
+            nw2:
+                ipv4_address: 172.100.2.20
+            
+networks: 
+    nw1:
+        driver: bridge
+        ipam:
+            driver: default
+            config: 
+                - subnet: 172.100.1.0/24
+                  gateway: 172.100.1.1
+    nw2:
+        driver: bridge
+        ipam:
+            driver: default
+            config: 
+                - subnet: 172.100.2.0/24
+                  gateway: 172.100.2.1
